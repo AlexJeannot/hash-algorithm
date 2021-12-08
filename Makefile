@@ -14,35 +14,29 @@ RM 		= rm -rf
 DSRCS		= ./srcs/
 MD5_DIR		= md5/
 #OTOOL_DIR 	= otool/
-#BASE_DIR 	= base/
+BASE_DIR 	= base/
 
 MD5_DOBJS	= ./comp/md5/
 #OTOOL_DOBJS	= ./comp/otool/
-#BASE_DOBJS	= ./comp/base/
+BASE_DOBJS	= ./comp/base/
 
 
 # SOURCES
-MD5_SRCS 	= 	md5.c	\
-				swap.c
+MD5_SRCS 	= 	md5.c
 
 #OTOOL_SRCS 	= 	otool.c
-#BASE_SRCS 	= 	clear.c		\
-				control.c	\
-				display.c	\
-				exit.c 		\
-				fat.c		\
-				lib.c		\
-				parse.c		\
-				resources.c	\
-				segment.c	\
-				swap.c		\
-				symbol.c	\
-				text.c
+
+BASE_SRCS 	= 	annexes.c	\
+				clean.c		\
+				error.c		\
+				file.c		\
+				padding.c	\
+				swap.c		
 
 # OBJS
 MD5_OBJS 	= $(MD5_SRCS:%.c=$(MD5_DOBJS)%.o)
 #OTOOL_OBJS 	= $(OTOOL_SRCS:%.c=$(OTOOL_DOBJS)%.o)
-#BASE_OBJS 	= $(BASE_SRCS:%.c=$(BASE_DOBJS)%.o)
+BASE_OBJS 	= $(BASE_SRCS:%.c=$(BASE_DOBJS)%.o)
 
 
 #H EADER FILE
@@ -56,9 +50,9 @@ all: $(MD5)
 
 
 # COMPILATION
-$(MD5): $(MD5_OBJS) #$(BASE_OBJS)
-#	$(CC) $(FLAGS) $(NM_OBJS) $(BASE_OBJS) -o $(NM)
-	$(CC) $(FLAGS) $(MD5_OBJS) -o $(MD5)
+$(MD5): $(MD5_OBJS) $(BASE_OBJS)
+	$(CC) $(FLAGS) $(MD5_OBJS) $(BASE_OBJS) -o $(MD5)
+#	$(CC) $(FLAGS) $(MD5_OBJS) -o $(MD5)
 	echo "$(GREEN)MD5 DONE ✔$(RESET)"
 
 #$(OTOOL): $(OTOOL_OBJS) $(BASE_OBJS)
@@ -67,7 +61,7 @@ $(MD5): $(MD5_OBJS) #$(BASE_OBJS)
 
 $(MD5_OBJS): | $(MD5_DOBJS)
 #$(OTOOL_OBJS): | $(OTOOL_DOBJS)
-#$(BASE_OBJS): | $(BASE_DOBJS)
+$(BASE_OBJS): | $(BASE_DOBJS)
 
 $(MD5_DOBJS)%.o: $(DSRCS)$(MD5_DIR)%.c $(HEADER)
 	$(CC) $(FLAGS) -c $< -o $@
@@ -75,8 +69,8 @@ $(MD5_DOBJS)%.o: $(DSRCS)$(MD5_DIR)%.c $(HEADER)
 #$(OTOOL_DOBJS)%.o: $(DSRCS)$(OTOOL_DIR)%.c $(HEADER)
 #	$(CC) $(FLAGS) -c $< -o $@
 
-#$(BASE_DOBJS)%.o: $(DSRCS)$(BASE_DIR)%.c $(HEADER)
-#	$(CC) $(FLAGS) -c $< -o $@
+$(BASE_DOBJS)%.o: $(DSRCS)$(BASE_DIR)%.c $(HEADER)
+	$(CC) $(FLAGS) -c $< -o $@
 
 
 # OBJECT FILE DIRECTORY CREATION
@@ -86,8 +80,8 @@ $(MD5_DOBJS):
 #$(OTOOL_DOBJS):
 #	mkdir -p $(OTOOL_DOBJS)
 
-#$(BASE_DOBJS):
-#	mkdir -p $(BASE_DOBJS)
+$(BASE_DOBJS):
+	mkdir -p $(BASE_DOBJS)
 
 
 # CLEAR
