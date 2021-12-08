@@ -18,10 +18,19 @@ typedef struct  s_message
     char *fmt_content;
     u_int64_t rc_size;
     u_int64_t fc_size;
+    u_int64_t cc_size;
     int32_t fd;
 
 }               t_message;
 
+typedef struct s_buffers
+{
+    u_int32_t a;
+    u_int32_t b;
+    u_int32_t c;
+    u_int32_t d;
+
+}       t_buffers;
 
 /*
 ** ANNEXES.C
@@ -64,6 +73,24 @@ u_int32_t swapuInt32(u_int32_t val);
 int32_t swapInt32(int32_t val);
 u_int64_t swapuInt64(u_int64_t val);
 int64_t swapInt64(int64_t val);
+
+
+
+/*
+** CONST.C
+*/
+extern const u_int32_t constants[64];
+extern const u_int32_t computed_constants[64];
+extern const u_int32_t blocks_constants[64];
+
+
+
+typedef u_int32_t(*round_function)(u_int32_t, u_int32_t, u_int32_t);
+
+u_int32_t f(u_int32_t x, u_int32_t y, u_int32_t z);
+u_int32_t g(u_int32_t x, u_int32_t y, u_int32_t z);
+u_int32_t h(u_int32_t x, u_int32_t y, u_int32_t z);
+u_int32_t i(u_int32_t x, u_int32_t y, u_int32_t z);
 
 
 #endif
