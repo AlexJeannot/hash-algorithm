@@ -30,13 +30,24 @@ u_int32_t i(u_int32_t x, u_int32_t y, u_int32_t z)
     return (y ^ (x | (~z)));
 }
 
-u_int32_t process_round(u_int32_t a, u_int32_t b, u_int32_t c, u_int32_t d, u_int32_t block, u_int32_t round, u_int32_t count)
+void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32_t count)
 {
-    a += r_func[round](b, c, d) + block + computed_constants[count];
-    a = (a << constants[count]) | (a >> (32 - constants[count]));
-    a += b;
+    buffers->a += r_func[round](buffers->b, buffers->c, buffers->d) + block + computed_constants[count];
+    buffers->a = (buffers->a << constants[count]) | (buffers->a >> (32 - constants[count]));
+    buffers->a += buffers->b;
 
-    return (a);
+    u_int32_t temp = buffers->d;
+    buffers->d = buffers->c;
+    buffers->c = buffers->b;
+    buffers->b = buffers->a;
+    buffers->a = temp;
+
+    printf("\n\n------------  %d  ----------------\n", count);
+    printf("buffers a = %u\n", buffers->a);
+    printf("buffers b = %u\n", buffers->b);
+    printf("buffers c = %u\n", buffers->c);
+    printf("buffers d = %u\n", buffers->d);
+    printf("------------  %d  ----------------", count);
 }
 
 void process_msg(t_message *msg, t_buffers *buffers)
@@ -60,44 +71,52 @@ void process_msg(t_message *msg, t_buffers *buffers)
         c = buffers->c;
         d = buffers->d;
 
+        printf("\n\n------------ --------------  ----------------\n");
+        printf("buffers a = %u\n", buffers->a);
+        printf("buffers b = %u\n", buffers->b);
+        printf("buffers c = %u\n", buffers->c);
+        printf("buffers d = %u\n", buffers->d);
         u_int32_t round = 0;
         for (u_int32_t count = 0; count < 64;)
         {
-            if (count % 16 && count != 0)
+            if (count % 16 == 0 && count != 0)
                 round += 1;
             
+            printf("count = %d\n", count);
+            printf("round = %d\n", round);
             printf("BEFORE process\n");
-            a = process_round(a, b, c, d, *current_blocks[blocks_constants[count]], round, count); /* 1 */
+
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 1 */
             count++;
-            d = process_round(d, a, b, c, *current_blocks[blocks_constants[count]], round, count); /* 2 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 2 */
             count++;
-            c = process_round(c, d, a, b, *current_blocks[blocks_constants[count]], round, count); /* 3 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 3 */
             count++;
-            b = process_round(b, c, d, a, *current_blocks[blocks_constants[count]], round, count); /* 4 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 4 */
             count++;
-            a = process_round(a, b, c, d, *current_blocks[blocks_constants[count]], round, count); /* 5 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 5 */
             count++;
-            d = process_round(d, a, b, c, *current_blocks[blocks_constants[count]], round, count); /* 6 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 6 */
             count++;
-            c = process_round(c, d, a, b, *current_blocks[blocks_constants[count]], round, count); /* 7 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 7 */
             count++;
-            b = process_round(b, c, d, a, *current_blocks[blocks_constants[count]], round, count); /* 8 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 8 */
             count++;
-            a = process_round(a, b, c, d, *current_blocks[blocks_constants[count]], round, count); /* 9 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 9 */
             count++;
-            d = process_round(d, a, b, c, *current_blocks[blocks_constants[count]], round, count); /* 10 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 10 */
             count++;
-            c = process_round(c, d, a, b, *current_blocks[blocks_constants[count]], round, count); /* 11 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 11 */
             count++;
-            b = process_round(b, c, d, a, *current_blocks[blocks_constants[count]], round, count); /* 12 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 12 */
             count++;
-            a = process_round(a, b, c, d, *current_blocks[blocks_constants[count]], round, count); /* 13 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 13 */
             count++;
-            d = process_round(d, a, b, c, *current_blocks[blocks_constants[count]], round, count); /* 14 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 14 */
             count++;
-            c = process_round(c, d, a, b, *current_blocks[blocks_constants[count]], round, count); /* 15 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 15 */
             count++;
-            b = process_round(b, c, d, a, *current_blocks[blocks_constants[count]], round, count); /* 16 */
+            process_round(buffers, *current_blocks[blocks_constants[count]], round, count); /* 16 */
             count++;
         }
         
@@ -111,10 +130,10 @@ void process_msg(t_message *msg, t_buffers *buffers)
     }
 
     printf("\n");
-    printf("%x", buffers->a);
-    printf("%x", buffers->b);
-    printf("%x", buffers->c);
-    printf("%x", buffers->d);
+    printf("%x", swapuInt32(buffers->a));
+    printf("%x", swapuInt32(buffers->b));
+    printf("%x", swapuInt32(buffers->c));
+    printf("%x", swapuInt32(buffers->d));
     printf("\n");
 
 
@@ -139,6 +158,20 @@ int main(int argc, char **argv)
 
     format_msg(&msg);
     printf("FMT CONTENT = %s\n", msg.fmt_content);
+
+    printf("\n\n");
+    char c;
+    for (int count = 0; count < 64 ; count++)
+    {
+        c = msg.fmt_content[count];
+        for (int bit = 0; bit < 8; bit++)
+        {
+            printf("%d", c & 0b00000001);
+            c = c >> 1;
+        }
+        printf(" ");
+    }
+    printf("\n\n");
 
     init_buffers(&buffers);
 
