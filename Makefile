@@ -22,8 +22,11 @@ BASE_DOBJS	= ./comp/base/
 
 
 # SOURCES
-MD5_SRCS 	= 	md5.c	\
-				const.c
+MD5_SRCS 	= 	auxiliary_functions.c	\
+				const.c					\
+				digest.c				\
+				md5.c
+				
 
 #OTOOL_SRCS 	= 	otool.c
 
