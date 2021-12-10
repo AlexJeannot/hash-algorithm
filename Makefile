@@ -2,7 +2,7 @@
 GREEN 	= \033[38;5;40m
 RESET 	= \033[0m
 MD5 		= ft_md5
-OTOOL 	= ft_otool
+SHA256 	= ft_sha256
 
 # COMPILATION
 CC 		= gcc
@@ -13,11 +13,11 @@ RM 		= rm -rf
 # DIRECTORIES
 DSRCS		= ./srcs/
 MD5_DIR		= md5/
-#OTOOL_DIR 	= otool/
+SHA256_DIR 	= sha256/
 BASE_DIR 	= base/
 
 MD5_DOBJS	= ./comp/md5/
-#OTOOL_DOBJS	= ./comp/otool/
+SHA256_DOBJS	= ./comp/sha256/
 BASE_DOBJS	= ./comp/base/
 
 
@@ -28,29 +28,35 @@ MD5_SRCS 	= 	auxiliary_functions.c	\
 				md5.c
 				
 
-#OTOOL_SRCS 	= 	otool.c
+SHA256_SRCS 	= 	auxiliary_functions.c	\
+					const.c					\
+					digest.c				\
+					sha256.c	
 
 BASE_SRCS 	= 	annexes.c	\
 				clean.c		\
 				error.c		\
 				file.c		\
+				hash.c		\
 				padding.c	\
 				swap.c		
 
 # OBJS
 MD5_OBJS 	= $(MD5_SRCS:%.c=$(MD5_DOBJS)%.o)
-#OTOOL_OBJS 	= $(OTOOL_SRCS:%.c=$(OTOOL_DOBJS)%.o)
+SHA256_OBJS 	= $(SHA256_SRCS:%.c=$(SHA256_DOBJS)%.o)
 BASE_OBJS 	= $(BASE_SRCS:%.c=$(BASE_DOBJS)%.o)
 
 
 #H EADER FILE
-#HEADER = ./incs/nm_otool.h
-HEADER = ./incs/md5.h
+#HEADER = ./incs/sha256.h
+HEADER =	./incs/base.h	\
+			./incs/md5.h	\
+			./incs/sha256.h
 
 
 # MAKE
-#all: $(NM) $(OTOOL)
-all: $(MD5)
+#all: $(NM) $(SHA256)
+all: $(MD5) $(SHA256)
 
 
 # COMPILATION
@@ -59,19 +65,19 @@ $(MD5): $(MD5_OBJS) $(BASE_OBJS)
 #	$(CC) $(FLAGS) $(MD5_OBJS) -o $(MD5)
 	echo "$(GREEN)MD5 DONE ✔$(RESET)"
 
-#$(OTOOL): $(OTOOL_OBJS) $(BASE_OBJS)
-#	$(CC) $(FLAGS) $(OTOOL_OBJS) $(BASE_OBJS) -o $(OTOOL)
-#	echo "$(GREEN)OTOOL DONE ✔$(RESET)"
+$(SHA256): $(SHA256_OBJS) $(BASE_OBJS)
+	$(CC) $(FLAGS) $(SHA256_OBJS) $(BASE_OBJS) -o $(SHA256)
+	echo "$(GREEN)SHA256 DONE ✔$(RESET)"
 
 $(MD5_OBJS): | $(MD5_DOBJS)
-#$(OTOOL_OBJS): | $(OTOOL_DOBJS)
+$(SHA256_OBJS): | $(SHA256_DOBJS)
 $(BASE_OBJS): | $(BASE_DOBJS)
 
 $(MD5_DOBJS)%.o: $(DSRCS)$(MD5_DIR)%.c $(HEADER)
 	$(CC) $(FLAGS) -c $< -o $@
 
-#$(OTOOL_DOBJS)%.o: $(DSRCS)$(OTOOL_DIR)%.c $(HEADER)
-#	$(CC) $(FLAGS) -c $< -o $@
+$(SHA256_DOBJS)%.o: $(DSRCS)$(SHA256_DIR)%.c $(HEADER)
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(BASE_DOBJS)%.o: $(DSRCS)$(BASE_DIR)%.c $(HEADER)
 	$(CC) $(FLAGS) -c $< -o $@
@@ -81,8 +87,8 @@ $(BASE_DOBJS)%.o: $(DSRCS)$(BASE_DIR)%.c $(HEADER)
 $(MD5_DOBJS):
 	mkdir -p $(MD5_DOBJS)
 
-#$(OTOOL_DOBJS):
-#	mkdir -p $(OTOOL_DOBJS)
+$(SHA256_DOBJS):
+	mkdir -p $(SHA256_DOBJS)
 
 $(BASE_DOBJS):
 	mkdir -p $(BASE_DOBJS)
@@ -93,10 +99,10 @@ clean:
 	$(RM) ./comp
 
 fclean: clean
-#	$(RM) $(NM) $(OTOOL)
-	$(RM) $(MD5)
+#	$(RM) $(NM) $(SHA256)
+	$(RM) $(MD5) $(SHA256)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-.SILENT: all $(MD5)
+.SILENT: all $(MD5) $(SHA256)

@@ -48,68 +48,12 @@ void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32
     swap_buffers(buffers);
 }
 
-char *uint_to_hex(u_int64_t number)
-{
-    u_int64_t tmp_number;
-    int16_t number_char;
-    char *output;
-
-    tmp_number = number;
-
-    number_char = 1;
-    while (tmp_number /= 16)
-        number_char++;
-    printf("number_char = %u\n", number_char);
-    printf("number = %lu\n", number);
-    if (!(output = malloc(number_char)))
-        exit(1);
-
-    number_char--;
-    for (; number_char >= 0; number_char--) {
-        if (number % 16 >= 10)
-        {
-            //printf("number_char mod 16 - 10 + 'a' = %c\n", number % 16 - 10 + 'a');
-            output[number_char] = number % 16 - 10 + 'a';
-            // printf("output[%d] = %c\n", number_char, output[number_char]);
-        }
-        else
-        {
-
-            output[number_char] = number % 16 + '0';
-            // printf("output[%d] = %c\n", number_char, output[number_char]);
-        }
-        printf("output[%d] = %c\n", number_char, output[number_char]);
-        number /= 16;
-    }
-    printf("output = %s\n", output);
-    return (output);
-}
-
-char *build_hash(void *buffers, u_int32_t nb_words)
-{
-    char        *hash;
-    u_int32_t   *buffer;
-    u_int8_t    nb_chars;
-
-    nb_chars = (nb_words * 8) + 1;
-    if (!(hash = (char *)malloc(nb_chars)))
-        exit(1);
-    bzero(hash, nb_chars);
-
-    for (u_int32_t count = 0; count < nb_words; count++) {
-        buffer = ((u_int32_t *)(buffers)) + count;
-        strncat(hash, uint_to_hex(swapuInt32(*buffer)), 8);
-    }
-
-    return (hash);
-}
-
 char* process_msg(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
-    char        *hash;
-    u_int32_t   *(blocks[16]);
+    u_int32_t   blocks[16];
+    u_int32_t   *ptr_block;
     u_int32_t   block_offset;
     u_int32_t   round;
 
@@ -119,7 +63,8 @@ char* process_msg(t_message *msg)
         for (u_int32_t count = 0; count < 16; count++)
         {
             block_offset = msg->cc_size + (count * 4);
-            blocks[count] = (u_int32_t *)&msg->fmt_content[block_offset];
+            ptr_block = (u_int32_t *)&msg->fmt_content[block_offset];
+            blocks[count] = *ptr_block;
         }
 
         store_buffers(&buffers, &save_buffers);
@@ -128,13 +73,12 @@ char* process_msg(t_message *msg)
         {
             if (count % 16 == 0 && count != 0)
                 round += 1;
-            process_round(&buffers, *blocks[blocks_constants[count]], round, count);
+            process_round(&buffers, blocks[blocks_constants[count]], round, count);
         }
         add_buffers(&buffers, &save_buffers);
 
         msg->cc_size += 64;
     }
 
-    hash = build_hash(&buffers, 4);
-    return (hash);
+    return (build_hash(&buffers, 4, TRUE));
 }

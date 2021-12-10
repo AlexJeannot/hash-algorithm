@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 
     get_file(&msg, argv[1]);
     get_file_content(&msg);
-    format_msg(&msg);
+    format_msg(&msg, FALSE);
     process_msg(&msg);
     clean_msg(&msg);
     
