@@ -103,7 +103,7 @@ void store_buffers(t_buffers *buffers, t_buffers *save_buffers);
 void swap_buffers(t_buffers *buffers);
 void add_buffers(t_buffers *buffers, t_buffers *save_buffers);
 void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32_t count);
-void process_msg(t_message *msg);
+char* process_msg(t_message *msg);
 
 
 #endif

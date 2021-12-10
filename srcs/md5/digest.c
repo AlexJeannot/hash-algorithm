@@ -48,41 +48,70 @@ void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32
     swap_buffers(buffers);
 }
 
-char *build_hash(t_buffers *buffers, u_int32_t size)
+char *uint_to_hex(u_int64_t number)
 {
-    char *hash;
+    u_int64_t tmp_number;
+    int16_t number_char;
+    char *output;
 
-    if (!(hash = (char *)malloc(size)))
+    tmp_number = number;
+
+    number_char = 1;
+    while (tmp_number /= 16)
+        number_char++;
+    printf("number_char = %u\n", number_char);
+    printf("number = %lu\n", number);
+    if (!(output = malloc(number_char)))
         exit(1);
-    
-    buffers->a = swapuInt32(buffers->a);
-    buffers->b = swapuInt32(buffers->b);
-    buffers->c = swapuInt32(buffers->c);
-    buffers->d = swapuInt32(buffers->d);
 
-    for (int count = 0; count < 4; count++)
-    {
-        memcpy(&hash[0], &buffers->a, 4);
-        memcpy(&hash[4], &buffers->b, 4);
-        memcpy(&hash[8], &buffers->c, 4);
-        memcpy(&hash[12], &buffers->d, 4);
+    number_char--;
+    for (; number_char >= 0; number_char--) {
+        if (number % 16 >= 10)
+        {
+            //printf("number_char mod 16 - 10 + 'a' = %c\n", number % 16 - 10 + 'a');
+            output[number_char] = number % 16 - 10 + 'a';
+            // printf("output[%d] = %c\n", number_char, output[number_char]);
+        }
+        else
+        {
+
+            output[number_char] = number % 16 + '0';
+            // printf("output[%d] = %c\n", number_char, output[number_char]);
+        }
+        printf("output[%d] = %c\n", number_char, output[number_char]);
+        number /= 16;
     }
+    printf("output = %s\n", output);
+    return (output);
+}
 
-    printf("%x", swapuInt32(buffers->a));
-    printf("%x", swapuInt32(buffers->b));
-    printf("%x", swapuInt32(buffers->c));
-    printf("%x", swapuInt32(buffers->d));
+char *build_hash(void *buffers, u_int32_t nb_words)
+{
+    char        *hash;
+    u_int32_t   *buffer;
+    u_int8_t    nb_chars;
+
+    nb_chars = (nb_words * 8) + 1;
+    if (!(hash = (char *)malloc(nb_chars)))
+        exit(1);
+    bzero(hash, nb_chars);
+
+    for (u_int32_t count = 0; count < nb_words; count++) {
+        buffer = ((u_int32_t *)(buffers)) + count;
+        strncat(hash, uint_to_hex(swapuInt32(*buffer)), 8);
+    }
 
     return (hash);
 }
 
-void process_msg(t_message *msg)
+char* process_msg(t_message *msg)
 {
-    t_buffers buffers;
-    t_buffers save_buffers;
-    u_int32_t *(blocks[16]);
-    u_int32_t block_offset;
-    u_int32_t round;
+    t_buffers   buffers;
+    t_buffers   save_buffers;
+    char        *hash;
+    u_int32_t   *(blocks[16]);
+    u_int32_t   block_offset;
+    u_int32_t   round;
 
     init_buffers(&buffers);
     while (msg->cc_size < msg->fc_size)
@@ -106,13 +135,6 @@ void process_msg(t_message *msg)
         msg->cc_size += 64;
     }
 
-    char *hash = build_hash(&buffers, 16);
-    printf("hash = %s\n", hash);
-
-    // printf("\n");
-    // printf("%x", swapuInt32(buffers.a));
-    // printf("%x", swapuInt32(buffers.b));
-    // printf("%x", swapuInt32(buffers.c));
-    // printf("%x", swapuInt32(buffers.d));
-    // printf("\n");
+    hash = build_hash(&buffers, 4);
+    return (hash);
 }
