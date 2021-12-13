@@ -2,7 +2,8 @@
 GREEN 	= \033[38;5;40m
 RESET 	= \033[0m
 MD5 		= ft_md5
-SHA256 	= ft_sha256
+SHA256 		= ft_sha256
+FT_SSL 		= ft_ssl
 
 # COMPILATION
 CC 		= gcc
@@ -38,6 +39,7 @@ BASE_SRCS 	= 	annexes.c	\
 				error.c		\
 				file.c		\
 				hash.c		\
+				main.c		\
 				padding.c	\
 				swap.c		
 
@@ -45,7 +47,6 @@ BASE_SRCS 	= 	annexes.c	\
 MD5_OBJS 	= $(MD5_SRCS:%.c=$(MD5_DOBJS)%.o)
 SHA256_OBJS 	= $(SHA256_SRCS:%.c=$(SHA256_DOBJS)%.o)
 BASE_OBJS 	= $(BASE_SRCS:%.c=$(BASE_DOBJS)%.o)
-
 
 #H EADER FILE
 #HEADER = ./incs/sha256.h
@@ -56,18 +57,24 @@ HEADER =	./incs/base.h	\
 
 # MAKE
 #all: $(NM) $(SHA256)
-all: $(MD5) $(SHA256)
+# all: $(MD5) $(SHA256)
+all: $(FT_SSL)
 
 
 # COMPILATION
-$(MD5): $(MD5_OBJS) $(BASE_OBJS)
-	$(CC) $(FLAGS) $(MD5_OBJS) $(BASE_OBJS) -o $(MD5)
-#	$(CC) $(FLAGS) $(MD5_OBJS) -o $(MD5)
-	echo "$(GREEN)MD5 DONE ✔$(RESET)"
+# $(MD5): $(MD5_OBJS) $(BASE_OBJS)
+# 	$(CC) $(FLAGS) $(MD5_OBJS) $(BASE_OBJS) -o $(MD5)
+# #	$(CC) $(FLAGS) $(MD5_OBJS) -o $(MD5)
+# 	echo "$(GREEN)MD5 DONE ✔$(RESET)"
 
-$(SHA256): $(SHA256_OBJS) $(BASE_OBJS)
-	$(CC) $(FLAGS) $(SHA256_OBJS) $(BASE_OBJS) -o $(SHA256)
-	echo "$(GREEN)SHA256 DONE ✔$(RESET)"
+# $(SHA256): $(SHA256_OBJS) $(BASE_OBJS)
+# 	$(CC) $(FLAGS) $(SHA256_OBJS) $(BASE_OBJS) -o $(SHA256)
+# 	echo "$(GREEN)SHA256 DONE ✔$(RESET)"
+
+$(FT_SSL): $(MD5_OBJS) $(SHA256_OBJS) $(BASE_OBJS)
+	$(CC) $(FLAGS) $(MD5_OBJS) $(SHA256_OBJS) $(BASE_OBJS) -o $(FT_SSL)
+	echo "$(GREEN)FT_SSL DONE ✔$(RESET)"
+
 
 $(MD5_OBJS): | $(MD5_DOBJS)
 $(SHA256_OBJS): | $(SHA256_DOBJS)
@@ -100,9 +107,9 @@ clean:
 
 fclean: clean
 #	$(RM) $(NM) $(SHA256)
-	$(RM) $(MD5) $(SHA256)
+	$(RM) $(FT_SSL)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-.SILENT: all $(MD5) $(SHA256)
+.SILENT: all $(FT_SSL)

@@ -1,21 +1,12 @@
 #include "../../incs/md5.h"
 
-int main(int argc, char **argv) 
+char* md5(t_message *msg)
 {
-    t_message msg;
-
-    bzero(&msg, sizeof(t_message));
-
-    if (argc <= 1 || argc > 2) {
-        printf("Need an argument\n");
-        exit(1);
-    }
-
-    get_file(&msg, argv[1]);
-    get_file_content(&msg);
-    format_msg(&msg, FALSE);
-    process_msg(&msg);
-    clean_msg(&msg);
+    char *hash;
     
-    return (0);
+    format_msg(msg, FALSE);
+    hash = process_msg_md5(msg);
+    clean_msg(msg);
+    
+    return (hash);
 }

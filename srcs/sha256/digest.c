@@ -1,6 +1,6 @@
 #include "../../incs/sha256.h"
 
-void init_buffers(t_buffers *buffers)
+static void init_buffers(t_buffers *buffers)
 {
     bzero(buffers, sizeof(t_buffers));
 
@@ -14,7 +14,7 @@ void init_buffers(t_buffers *buffers)
     buffers->h = 0x5be0cd19;
 }
 
-void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
+static void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
 {
     save_buffers->a = buffers->a;
     save_buffers->b = buffers->b;
@@ -26,7 +26,7 @@ void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
     save_buffers->h = buffers->h;
 }
 
-void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
+static void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
 {
     buffers->a += save_buffers->a;
     buffers->b += save_buffers->b;
@@ -38,7 +38,7 @@ void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
     buffers->h += save_buffers->h;
 }
 
-void swap_buffers(t_buffers *buffers, u_int32_t t1, u_int32_t t2)
+static void swap_buffers(t_buffers *buffers, u_int32_t t1, u_int32_t t2)
 {   
     buffers->h = buffers->g;
     buffers->g = buffers->f;
@@ -50,18 +50,18 @@ void swap_buffers(t_buffers *buffers, u_int32_t t1, u_int32_t t2)
     buffers->a = t1 + t2;
 }
 
-void process_round(t_buffers *buffers, u_int32_t block, u_int32_t count)
+static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t count)
 {
     u_int32_t t1;
     u_int32_t t2;
 
-    t1 = buffers->h + bsig1(buffers->e) + ch(buffers->e, buffers->f, buffers->g) + computed_constants[count] + block;
+    t1 = buffers->h + bsig1(buffers->e) + ch(buffers->e, buffers->f, buffers->g) + sha256_computed_constants[count] + block;
     t2 = bsig0(buffers->a) + maj(buffers->a, buffers->b, buffers->c);
 
     swap_buffers(buffers, t1, t2);
 }
 
-char* process_msg(t_message *msg)
+char* process_msg_sha256(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;

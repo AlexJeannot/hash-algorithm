@@ -2,7 +2,7 @@
 
 round_function r_func[4] = {&f, &g, &h, &i};
 
-void init_buffers(t_buffers *buffers)
+static void init_buffers(t_buffers *buffers)
 {
     bzero(buffers, sizeof(t_buffers));
 
@@ -12,7 +12,7 @@ void init_buffers(t_buffers *buffers)
     buffers->d = 0x10325476;
 }
 
-void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
+static void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
 {
     save_buffers->a = buffers->a;
     save_buffers->b = buffers->b;
@@ -20,7 +20,7 @@ void store_buffers(t_buffers *buffers, t_buffers *save_buffers)
     save_buffers->d = buffers->d;
 }
 
-void swap_buffers(t_buffers *buffers)
+static void swap_buffers(t_buffers *buffers)
 {
     u_int32_t temp;
     
@@ -31,7 +31,7 @@ void swap_buffers(t_buffers *buffers)
     buffers->a = temp;
 }
 
-void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
+static void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
 {
     buffers->a += save_buffers->a;
     buffers->b += save_buffers->b;
@@ -39,16 +39,16 @@ void add_buffers(t_buffers *buffers, t_buffers *save_buffers)
     buffers->d += save_buffers->d;
 }
 
-void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32_t count)
+static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, u_int32_t count)
 {
-    buffers->a += r_func[round](buffers->b, buffers->c, buffers->d) + block + computed_constants[count];
-    buffers->a = (buffers->a << constants[count]) | (buffers->a >> (32 - constants[count]));
+    buffers->a += r_func[round](buffers->b, buffers->c, buffers->d) + block + md5_computed_constants[count];
+    buffers->a = (buffers->a << md5_constants[count]) | (buffers->a >> (32 - md5_constants[count]));
     buffers->a += buffers->b;
 
     swap_buffers(buffers);
 }
 
-char* process_msg(t_message *msg)
+char* process_msg_md5(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
@@ -73,7 +73,7 @@ char* process_msg(t_message *msg)
         {
             if (count % 16 == 0 && count != 0)
                 round += 1;
-            process_round(&buffers, blocks[blocks_constants[count]], round, count);
+            process_round(&buffers, blocks[md5_blocks_constants[count]], round, count);
         }
         add_buffers(&buffers, &save_buffers);
 

@@ -1,6 +1,6 @@
 #include "../../incs/md5.h"
 
-const u_int32_t constants[64] = {
+const u_int32_t md5_constants[64] = {
 	7, 12, 17, 22,
     7, 12, 17, 22,
     7, 12, 17, 22,
@@ -19,7 +19,7 @@ const u_int32_t constants[64] = {
     6, 10, 15, 21
 };
 
-const u_int32_t computed_constants[64] = {
+const u_int32_t md5_computed_constants[64] = {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
 	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -38,7 +38,7 @@ const u_int32_t computed_constants[64] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 };
 
-const u_int32_t blocks_constants[64] = {
+const u_int32_t md5_blocks_constants[64] = {
 	0, 1, 2, 3,
     4, 5, 6, 7,
     8, 9, 10, 11,

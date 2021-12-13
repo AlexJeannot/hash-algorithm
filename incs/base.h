@@ -77,7 +77,7 @@ int32_t swap_int_32(int32_t val);
 u_int64_t swap_uint_64(u_int64_t val);
 int64_t swap_int_64(int64_t val);
 
-
-
+char* md5(t_message *msg);
+char* sha256(t_message *msg);
 
 #endif
