@@ -34,7 +34,7 @@ extern const u_int32_t sha256_computed_constants[64];
 /*
 ** DIGEST.C
 */
-char* process_msg_sha256(t_message *msg);
+void process_msg_sha256(t_message *msg);
 
 
 #endif

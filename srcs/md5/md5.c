@@ -1,12 +1,9 @@
 #include "../../incs/md5.h"
 
-char* md5(t_message *msg)
+void md5(t_message *msg)
 {
-    char *hash;
-    
+    // printf("msg->raw_content 2 = %s\n", msg->raw_content);
     format_msg(msg, FALSE);
-    hash = process_msg_md5(msg);
-    clean_msg(msg);
-    
-    return (hash);
+    // printf("msg->raw_content 3 = %s\n", msg->raw_content);
+    process_msg_md5(msg);
 }

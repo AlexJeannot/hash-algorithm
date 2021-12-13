@@ -61,7 +61,7 @@ static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t count)
     swap_buffers(buffers, t1, t2);
 }
 
-char* process_msg_sha256(t_message *msg)
+void process_msg_sha256(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
@@ -91,5 +91,5 @@ char* process_msg_sha256(t_message *msg)
         msg->cc_size += 64;
     }
 
-    return (build_hash(&buffers, 8, FALSE));
+    build_hash(msg, &buffers, 8, FALSE);
 }

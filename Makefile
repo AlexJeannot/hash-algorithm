@@ -35,11 +35,14 @@ SHA256_SRCS 	= 	auxiliary_functions.c	\
 					sha256.c	
 
 BASE_SRCS 	= 	annexes.c	\
+				args.c		\
 				clean.c		\
+				display.c	\
 				error.c		\
 				file.c		\
 				hash.c		\
 				main.c		\
+				msg.c		\
 				padding.c	\
 				swap.c		
 

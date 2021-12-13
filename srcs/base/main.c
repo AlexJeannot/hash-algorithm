@@ -1,27 +1,22 @@
 #include "../../incs/base.h"
 
-void parse_args(int nb_args, char **args, t_message *msg)
-{
-    for (int32_t count = 0; count < nb_args; count++)
-    {
-        printf("args nb %u: %s\n", count, args[count]);
-    }
-    if (nb_args <= 0 || nb_args > 1) {
-        printf("Need an argument\n");
-        exit(1);
-    }
-
-    get_file(msg, args[0]);
-    get_file_content(msg);
-}
-
 int main(int argc, char **argv)
 {
-    t_message msg;
-    char *hash;
+    t_args args;
+    t_message *msg;
 
-    bzero(&msg, sizeof(t_message));
-    parse_args((argc - 1), &argv[1], &msg);
-    hash = md5(&msg);
-    printf("HASH = %s\n", hash);
+    list_msg = NULL;
+    bzero(&args, sizeof(t_args));
+    parse_args((argc - 1), &argv[1], &args);
+    msg = list_msg;
+    while (msg)
+    {
+        if (args.algorithm == ALGO_MD5)
+            md5(msg);
+        else if (args.algorithm == ALGO_SHA256)
+            sha256(msg);
+        display_hash(msg, &args);
+        clean_msg(msg);
+        msg = msg->next;
+    }
 }

@@ -48,7 +48,7 @@ static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, 
     swap_buffers(buffers);
 }
 
-char* process_msg_md5(t_message *msg)
+void process_msg_md5(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
@@ -79,6 +79,5 @@ char* process_msg_md5(t_message *msg)
 
         msg->cc_size += 64;
     }
-
-    return (build_hash(&buffers, 4, TRUE));
+    build_hash(msg, &buffers, 4, TRUE);
 }

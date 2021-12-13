@@ -33,7 +33,7 @@ u_int32_t i(u_int32_t x, u_int32_t y, u_int32_t z);
 /*
 ** DIGEST.C
 */
-char* process_msg_md5(t_message *msg);
+void process_msg_md5(t_message *msg);
 
 
 #endif

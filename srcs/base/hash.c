@@ -3,28 +3,39 @@
 char *uint_to_hex(u_int64_t number)
 {
     u_int64_t tmp_number;
-    int16_t number_char;
+    int16_t nb_char;
+    int16_t nb_zero;
     char *output;
 
     tmp_number = number;
-    number_char = 1;
+    nb_char = 1;
     while (tmp_number /= 16)
-        number_char++;
-    if (!(output = malloc(number_char)))
+        nb_char++;
+    if (!(output = malloc(nb_char)))
         exit(1); //todo
 
-    number_char--;
-    for (; number_char >= 0; number_char--) {
+    nb_char -= 1;
+    nb_zero = 0;
+    while (nb_char < 7) {
+        nb_zero++;
+        nb_char++;
+    }
+
+    for (; (nb_char - nb_zero) >= 0; nb_char--) {
         if (number % 16 >= 10)
-            output[number_char] = number % 16 - 10 + 'a';
+            output[nb_char] = number % 16 - 10 + 'a';
         else
-            output[number_char] = number % 16 + '0';
+            output[nb_char] = number % 16 + '0';
         number /= 16;
     }
+
+    nb_zero -= 1;
+    for (; nb_zero >= 0; nb_zero--)
+        output[nb_zero] = '0';
     return (output);
 }
 
-char *build_hash(void *buffers, u_int32_t nb_words, u_int8_t swap)
+void build_hash(t_message *msg, void *buffers, u_int32_t nb_words, u_int8_t swap)
 {
     char        *hash;
     u_int32_t   *buffer;
@@ -32,7 +43,7 @@ char *build_hash(void *buffers, u_int32_t nb_words, u_int8_t swap)
 
     nb_chars = (nb_words * 8) + 1;
     if (!(hash = (char *)malloc(nb_chars)))
-        exit(1);
+        exit(1); //todo
     bzero(hash, nb_chars);
 
     for (u_int32_t count = 0; count < nb_words; count++) {
@@ -42,6 +53,5 @@ char *build_hash(void *buffers, u_int32_t nb_words, u_int8_t swap)
         else
             strncat(hash, uint_to_hex(*buffer), 8);
     }
-
-    return (hash);
+    msg->hash = hash;
 }
