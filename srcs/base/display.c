@@ -7,7 +7,6 @@ void display_help(void)
 
 void display_src(t_message *msg, t_args *args)
 {
-    printf("args->p = %u\n", args->p);
     if (msg->src_type == SRC_STDIN && args->p)
         printf("(\"%s\") = ", msg->src);
     else if (msg->src_type == SRC_STDIN)

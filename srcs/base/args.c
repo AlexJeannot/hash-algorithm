@@ -81,7 +81,8 @@ void process_stdin(void)
     if (!(msg->src = (char *)malloc(msg->rc_size)))
         fatal_error("malloc");
     bzero(msg->src, msg->rc_size);
-    strncpy(msg->src, msg->raw_content, (msg->rc_size - 1));
+    if (msg->rc_size > 0)
+        strncpy(msg->src, msg->raw_content, (msg->rc_size - 1));
 }
 
 void parse_args(int nb_args, char **list_args, t_args *args)
@@ -103,10 +104,8 @@ void parse_args(int nb_args, char **list_args, t_args *args)
         else 
             break;
     }
-    for (; index_args < nb_args; index_args++) {
-        printf("PROCSS FILE = %s\n", list_args[index_args]);
+    for (; index_args < nb_args; index_args++)
         process_file(list_args[index_args]);
-    }
     
     if (args->p == TRUE || list_msg == NULL)
         process_stdin();

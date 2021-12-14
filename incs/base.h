@@ -41,7 +41,7 @@ typedef struct s_args
 
 }       t_args;
 
-t_message *list_msg;
+extern t_message *list_msg;
 
 /*
 ** ANNEXES.C

@@ -1,5 +1,7 @@
 #include "../../incs/base.h"
 
+t_message *list_msg;
+
 int main(int argc, char **argv)
 {
     t_args args;
