@@ -21,16 +21,11 @@ t_message *get_file_content(int32_t fd)
     {
         while ((ret = read(fd, buf, 1023)) > 0) {
             buf[ret] = '\0';
-            if (bytes_join(msg, &buf[0], ret) == ERROR) {
-                clean_msg(msg);
-                fatal_error("Message bytes joining");
-            }
+            bytes_join(msg, &buf[0], ret);
             bzero(&buf[0], 1024);
         }
-        if (ret == -1) {
-            clean_msg(msg);
-            fatal_error("File reading");
-        }
+        if (ret == -1)
+            fatal_error("file reading");
     }
     else
         msg->nofile = TRUE;
@@ -42,8 +37,9 @@ void set_file_context(t_message *msg, char *path)
 {
     msg->src_type = SRC_FILE;
     if (!(msg->src = (char *)malloc(strlen(path) + 1)))
-        fatal_error("malloc");
+        fatal_error("file source memory allocation");
     bzero(msg->src, (strlen(path) + 1));
+    
     strncpy(msg->src, path, strlen(path));
 }
 
@@ -56,5 +52,5 @@ void process_file(char *path)
     msg = get_file_content(fd);
     set_file_context(msg, path);
     if (fd > 0 && close(fd) == -1)
-        fatal_error("fd"); // todo 
+        fatal_error("file descriptor closing"); // todo 
 }

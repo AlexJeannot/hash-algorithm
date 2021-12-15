@@ -76,7 +76,7 @@ all: $(FT_SSL)
 
 $(FT_SSL): $(MD5_OBJS) $(SHA256_OBJS) $(BASE_OBJS)
 	$(CC) $(FLAGS) $(MD5_OBJS) $(SHA256_OBJS) $(BASE_OBJS) -o $(FT_SSL)
-	echo "$(GREEN)FT_SSL DONE ✔$(RESET)"
+	echo -e "$(GREEN)FT_SSL DONE ✔$(RESET)"
 
 
 $(MD5_OBJS): | $(MD5_DOBJS)

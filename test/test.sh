@@ -14,7 +14,7 @@ RESET="\033[0m"
 ################ MAKE ################
 
 cd ..
-make 
+make
 
 ################ FUNCTIONS ################
 
@@ -73,19 +73,19 @@ make_tests ()
 
     ################ FILE ################
 
-    result=$(./ft_ssl $1 test_file.txt)
+    result=$(./ft_ssl $1 test/test_file.txt)
     echo -e "$CYAN"
     echo -e "File input:$RESET\n$result"
 
-    result=$(./ft_ssl $1 -q test_file.txt)
+    result=$(./ft_ssl $1 -q test/test_file.txt)
     echo -e "$CYAN"
     echo -e "File input with -q option:$RESET\n$result"
 
-    result=$(./ft_ssl $1 -r test_file.txt)
+    result=$(./ft_ssl $1 -r test/test_file.txt)
     echo -e "$CYAN"
     echo -e "File input with -r option:$RESET\n$result"
 
-    result=$(./ft_ssl $1 -q -r test_file.txt)
+    result=$(./ft_ssl $1 -q -r test/test_file.txt)
     echo -e "$CYAN"
     echo -e "File input with -q/-r option:$RESET\n$result"
     echo ""
@@ -111,19 +111,19 @@ make_tests ()
 
     ################ MIX ################
 
-    result=$(echo "stdin input" | ./ft_ssl $1 -p -s "hello world" test_file.txt)
+    result=$(echo "stdin input" | ./ft_ssl $1 -p -s "hello world" test/test_file.txt)
     echo -e "$GREEN"
     echo -e "Mix input:$RESET\n$result"
 
-    result=$(echo "stdin input" | ./ft_ssl $1 -p -q -s "hello world" test_file.txt)
+    result=$(echo "stdin input" | ./ft_ssl $1 -p -q -s "hello world" test/test_file.txt)
     echo -e "$GREEN"
     echo -e "Mix input with -q option:$RESET\n$result"
 
-    result=$(echo "stdin input" | ./ft_ssl $1 -p -r -s "hello world" test_file.txt)
+    result=$(echo "stdin input" | ./ft_ssl $1 -p -r -s "hello world" test/test_file.txt)
     echo -e "$GREEN"
     echo -e "Mix input with -r option$RESET\n$result"
 
-    result=$(echo "stdin input" | ./ft_ssl $1 -p -q -r -s "hello world" test_file.txt)
+    result=$(echo "stdin input" | ./ft_ssl $1 -p -q -r -s "hello world" test/test_file.txt)
     echo -e "$GREEN"
     echo -e "Mix input with -q/-r option:$RESET\n$result"
     echo ""

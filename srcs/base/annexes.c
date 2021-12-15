@@ -12,12 +12,13 @@ size_t		ft_strlen(const char *s)
 	return (i);
 }
 
-u_int8_t bytes_join(t_message *msg, char *buf, u_int64_t buf_length)
+void bytes_join(t_message *msg, char *buf, u_int64_t buf_length)
 {
     char *new_msg;
 
     if (!(new_msg = (char *)malloc(msg->rc_size + buf_length + 1)))
-        return (ERROR);
+        fatal_error("File bytes memory allocation");
+    bzero(new_msg, (msg->rc_size + buf_length + 1));
     
     memcpy(new_msg, msg->raw_content, msg->rc_size);
     memcpy(&(new_msg[msg->rc_size]), buf, buf_length);
@@ -26,6 +27,4 @@ u_int8_t bytes_join(t_message *msg, char *buf, u_int64_t buf_length)
         free(msg->raw_content);
     msg->raw_content = new_msg;
     msg->rc_size += buf_length;
-
-    return (TRUE);
 }

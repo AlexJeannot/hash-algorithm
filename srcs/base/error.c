@@ -3,6 +3,7 @@
 void fatal_error(char *reason)
 {
     printf("Error: %s\n", reason);
+    clean_all_msg();
     exit(1);
 }
 
@@ -13,5 +14,6 @@ void args_error(char *reason, char *input)
     else
         printf("Error: %s\n", reason);
     display_help();
+    clean_all_msg();
     exit(1);
 }

@@ -47,7 +47,7 @@ extern t_message *list_msg;
 ** ANNEXES.C
 */
 size_t		ft_strlen(const char *s);
-u_int8_t bytes_join(t_message *msg, char *buf, u_int64_t buf_length);
+void bytes_join(t_message *msg, char *buf, u_int64_t buf_length);
 
 /*
 ** BITS.C
@@ -55,11 +55,6 @@ u_int8_t bytes_join(t_message *msg, char *buf, u_int64_t buf_length);
 u_int32_t rotate_left(u_int32_t x, u_int32_t offset);
 u_int32_t rotate_right(u_int32_t x, u_int32_t offset);
 u_int32_t shift_right(u_int32_t x, u_int32_t offset);
-
-/*
-** CLEAN.C
-*/
-void clean_msg(t_message *msg);
 
 
 /*
@@ -105,6 +100,10 @@ void sha256(t_message *msg);
 
 void parse_args(int nb_args, char **list_args, t_args *args);
 t_message *allocate_msg(void);
+void clean_all_msg(void);
+void clean_msg(t_message *msg);
+
+
 void display_help(void);
 void display_hash(t_message *msg, t_args *args);
 

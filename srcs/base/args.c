@@ -27,7 +27,9 @@ int32_t process_string(char *input, int32_t args_diff)
     msg = allocate_msg();
     msg->rc_size = strlen(input);
     if (!(msg->raw_content = (char *)malloc(msg->rc_size)))
-        fatal_error("malloc");
+        fatal_error("string input memory allocation");
+    bzero(msg->raw_content, msg->rc_size);
+    
     strncpy(msg->raw_content, input, msg->rc_size);
     msg->src_type = SRC_ARG;
 
@@ -79,8 +81,9 @@ void process_stdin(void)
     }
     msg->src_type = SRC_STDIN;
     if (!(msg->src = (char *)malloc(msg->rc_size)))
-        fatal_error("malloc");
+        fatal_error("stdin source memory allocation");
     bzero(msg->src, msg->rc_size);
+
     if (msg->rc_size > 0)
         strncpy(msg->src, msg->raw_content, (msg->rc_size - 1));
 }
@@ -89,10 +92,8 @@ void parse_args(int nb_args, char **list_args, t_args *args)
 {
     int32_t index_args;
 
-    if (nb_args < 1) {
+    if (nb_args < 1)
         args_error("No hash algorithm provided", NULL);
-        exit(1);
-    }
 
     index_args = 0;
     get_algorithm(args, list_args[index_args++]);

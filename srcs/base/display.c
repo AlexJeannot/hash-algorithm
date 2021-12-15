@@ -2,7 +2,19 @@
 
 void display_help(void)
 {
-    printf("HELP\n");
+    printf("\nUsage: algorithm [-p -q -r] [-s string] [file...]\n");
+    printf("    algorithm       Algorithm to hash input (md5/sha256)\n");
+    printf("    file            files to digest\n");
+    printf("    -p              Process STDIN input\n");
+    printf("    -q              Quiet mode (output hash only)\n");
+    printf("    -r              Reverse mode (output source after the hash)\n");
+    printf("    -s              Process string\n");
+    printf("\nexamples:\n");
+    printf("    ./ft_ssl file.txt\n");
+    printf("    ./ft_ssl -s \"hello world\"\n");
+    printf("    echo \"hello world\" | ./ft_ssl\n");
+    printf("    echo \"hello world\" | ./ft_ssl -p file.txt\n");
+    printf("    echo \"hello world\" | ./ft_ssl -p -s \"hello world\" file.txt\n");
 }
 
 void display_src(t_message *msg, t_args *args)
