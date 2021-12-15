@@ -55,6 +55,6 @@ void process_file(char *path)
     fd = get_file(path);
     msg = get_file_content(fd);
     set_file_context(msg, path);
-    if (close(fd) == -1)
+    if (fd > 0 && close(fd) == -1)
         fatal_error("fd"); // todo 
 }

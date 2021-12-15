@@ -19,6 +19,5 @@ void sha256(t_message *msg)
 {
     format_msg(msg, TRUE);
     process_msg_sha256(msg);
-    clean_msg(msg);
 }
 

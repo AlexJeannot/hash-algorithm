@@ -7,18 +7,26 @@ void display_help(void)
 
 void display_src(t_message *msg, t_args *args)
 {
+    if (args->r)
+        printf(" ");
     if (msg->src_type == SRC_STDIN && args->p)
-        printf("(\"%s\") = ", msg->src);
+        printf("(\"%s\")", msg->src);
     else if (msg->src_type == SRC_STDIN)
-        printf("(stdin) = ");
+        printf("(stdin)");
     else if (msg->src_type == SRC_ARG)
-        printf("(\"%s\") = ", msg->raw_content);
+        printf("(\"%s\")", msg->raw_content);
     else if (msg->src_type == SRC_FILE)
-        printf("(%s) = ", msg->src);
+        printf("(%s)", msg->src);
+    if (!args->r)
+        printf(" = ");
 }
 
 void display_hash(t_message *msg, t_args *args)
 {
+    if (msg->nofile) {
+        printf("Error: no such file [%s]\n", msg->src);
+        return ;
+    }
     if (!args->q)
     {
         if (args->algorithm == ALGO_MD5)

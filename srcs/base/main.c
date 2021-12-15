@@ -13,10 +13,13 @@ int main(int argc, char **argv)
     msg = list_msg;
     while (msg)
     {
-        if (args.algorithm == ALGO_MD5)
-            md5(msg);
-        else if (args.algorithm == ALGO_SHA256)
-            sha256(msg);
+        if (!msg->nofile)
+        {
+            if (args.algorithm == ALGO_MD5)
+                md5(msg);
+            else if (args.algorithm == ALGO_SHA256)
+                sha256(msg);
+        }
         display_hash(msg, &args);
         clean_msg(msg);
         msg = msg->next;
