@@ -11,7 +11,7 @@ int32_t     parse_options(t_args *args, char *input, char *next_input, int32_t a
 {
     if (!input)
         args_error("No option provided", NULL);
-    else if (strlen(input) != 2)
+    else if (ft_strlen(input) != 2)
         args_error("Wrong option provided", input);
     else if (input[1] == 'p') {
         if (args->p == TRUE)
@@ -37,9 +37,9 @@ int32_t     parse_options(t_args *args, char *input, char *next_input, int32_t a
 
 void        get_algorithm(t_args *args, char *input)
 {
-    if (strncmp(input, "md5", 3) == 0)
+    if (ft_strncmp(input, "md5", 3) == 0)
         args->algorithm = ALGO_MD5;
-    else if (strncmp(input, "sha256", 6) == 0)
+    else if (ft_strncmp(input, "sha256", 6) == 0)
         args->algorithm = ALGO_SHA256;
     else
         args_error("Wrong algorithm provided", input);

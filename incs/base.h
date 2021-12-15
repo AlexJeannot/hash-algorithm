@@ -51,7 +51,13 @@ extern t_message    *list_msg;
 ** ANNEXES.C
 */
 size_t              ft_strlen(const char *s);
+void	            *ft_memcpy(void *dest, const void *src, size_t n);
+int                 ft_strncmp(const char *s1, const char *s2, size_t n);
+void	            ft_strncpy(char *dest, const char *src, size_t n);
+void	            ft_strncat(char *dest, const char *src, size_t n);
+void                ft_bzero(void *s, size_t n);
 void                bytes_join(t_message *msg, char *buf, u_int64_t buf_length);
+void	            ft_putstr_fd(char *s, int fd);
 
 
 /*
@@ -72,14 +78,14 @@ u_int32_t           shift_right(u_int32_t x, u_int32_t offset);
 ** DISPLAY.C
 */
 void                display_help(void);
-void                display_hash(const t_message *msg, const t_args *args);
+void                display_hash(t_message *msg, t_args *args);
 
 
 /*
 ** ERROR.C
 */
-void                fatal_error(const char *reason);
-void                args_error(const char *reason, const char *input);
+void                fatal_error(char *reason);
+void                args_error(char *reason, char *input);
 
 
 /*
@@ -100,7 +106,7 @@ void                build_hash(t_message *msg, void *buffers, u_int32_t nb_words
 */
 t_message           *allocate_msg(void);
 void                clean_all_msg(void);
-void                clean_msg(t_message *msg);
+t_message           *clean_msg(t_message *msg);
 
 
 /*

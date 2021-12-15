@@ -8,12 +8,12 @@ int32_t process_string(char *input, int32_t args_diff)
         args_error("No string provided for -s option", NULL);
 
     msg = allocate_msg();
-    msg->rc_size = strlen(input);
+    msg->rc_size = ft_strlen(input);
     if (!(msg->raw_content = (char *)malloc(msg->rc_size)))
         fatal_error("string input memory allocation");
-    bzero(msg->raw_content, msg->rc_size);
+    ft_bzero(msg->raw_content, msg->rc_size);
     
-    strncpy(msg->raw_content, input, msg->rc_size);
+    ft_strncpy(msg->raw_content, input, msg->rc_size);
     msg->src_type = SRC_ARG;
 
     return (1);
@@ -39,8 +39,8 @@ void    process_stdin(void)
     msg->src_type = SRC_STDIN;
     if (!(msg->src = (char *)malloc(msg->rc_size)))
         fatal_error("stdin source memory allocation");
-    bzero(msg->src, msg->rc_size);
+    ft_bzero(msg->src, msg->rc_size);
 
     if (msg->rc_size > 0)
-        strncpy(msg->src, msg->raw_content, (msg->rc_size - 1));
+        ft_strncpy(msg->src, msg->raw_content, (msg->rc_size - 1));
 }

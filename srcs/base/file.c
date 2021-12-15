@@ -14,14 +14,14 @@ t_message   *get_file_content(int32_t fd)
     ssize_t     ret;
     char        buf[1024];
 
-    bzero(&buf[0], 1024);
+    ft_bzero(&buf[0], 1024);
     msg = allocate_msg();
     if (fd >= 0)
     {
         while ((ret = read(fd, buf, 1023)) > 0) {
             buf[ret] = '\0';
             bytes_join(msg, &buf[0], ret);
-            bzero(&buf[0], 1024);
+            ft_bzero(&buf[0], 1024);
         }
         if (ret == -1)
             fatal_error("file reading");
@@ -35,12 +35,12 @@ t_message   *get_file_content(int32_t fd)
 void        set_file_context(t_message *msg, char *path)
 {
     msg->src_type = SRC_FILE;
-    
-    if (!(msg->src = (char *)malloc(strlen(path) + 1)))
-        fatal_error("file source memory allocation");
-    bzero(msg->src, (strlen(path) + 1));
 
-    strncpy(msg->src, path, strlen(path));
+    if (!(msg->src = (char *)malloc(ft_strlen(path) + 1)))
+        fatal_error("file source memory allocation");
+    ft_bzero(msg->src, (ft_strlen(path) + 1));
+
+    ft_strncpy(msg->src, path, ft_strlen(path));
 }
 
 void        process_file(char *path)

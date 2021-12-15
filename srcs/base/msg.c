@@ -8,7 +8,7 @@ t_message   *allocate_msg(void)
     tmp_msg = NULL;
     if (!(new_msg = (t_message *)malloc(sizeof(t_message))))
         fatal_error("message memory allocation");
-    bzero(new_msg, sizeof(t_message));
+    ft_bzero(new_msg, sizeof(t_message));
 
     if (!list_msg)
         list_msg = new_msg;
@@ -26,14 +26,14 @@ void        clean_all_msg(void)
     t_message   *tmp;
 
     tmp = list_msg;
-    while (tmp) {
-        clean_msg(tmp);
-        tmp = tmp->next;
-    }
+    while (tmp)
+        tmp = clean_msg(tmp);
 }
 
-void        clean_msg(t_message *msg)
+t_message   *clean_msg(t_message *msg)
 {
+    t_message   *next;
+
     if (msg->raw_content)
         free(msg->raw_content);
     if (msg->fmt_content)
@@ -42,4 +42,8 @@ void        clean_msg(t_message *msg)
         free(msg->src);
     if (msg->hash)
         free(msg->hash);
+
+    next = msg->next;
+    free(msg);
+    return (next);
 }

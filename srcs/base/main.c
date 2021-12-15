@@ -8,8 +8,8 @@ int main(int argc, char **argv)
     t_args      args;
 
     list_msg = NULL;
-    bzero(&args, sizeof(t_args));
-    
+    ft_bzero(&args, sizeof(t_args));
+
     parse_args((argc - 1), &argv[1], &args);
     msg = list_msg;
     while (msg)
@@ -22,7 +22,6 @@ int main(int argc, char **argv)
                 sha256(msg);
         }
         display_hash(msg, &args);
-        clean_msg(msg);
-        msg = msg->next;
+        msg = clean_msg(msg);
     }
 }
