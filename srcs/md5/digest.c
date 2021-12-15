@@ -48,7 +48,7 @@ static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t round, 
     swap_buffers(buffers);
 }
 
-void process_msg_md5(t_message *msg)
+void        process_msg_md5(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
@@ -60,8 +60,7 @@ void process_msg_md5(t_message *msg)
     init_buffers(&buffers);
     while (msg->cc_size < msg->fc_size)
     {
-        for (u_int32_t count = 0; count < 16; count++)
-        {
+        for (u_int32_t count = 0; count < 16; count++) {
             block_offset = msg->cc_size + (count * 4);
             ptr_block = (u_int32_t *)&msg->fmt_content[block_offset];
             blocks[count] = *ptr_block;
@@ -69,14 +68,12 @@ void process_msg_md5(t_message *msg)
 
         store_buffers(&buffers, &save_buffers);
         round = 0;
-        for (u_int32_t count = 0; count < 64; count++)
-        {
+        for (u_int32_t count = 0; count < 64; count++) {
             if (count % 16 == 0 && count != 0)
                 round += 1;
             process_round(&buffers, blocks[md5_blocks_constants[count]], round, count);
         }
         add_buffers(&buffers, &save_buffers);
-
         msg->cc_size += 64;
     }
     build_hash(msg, &buffers, 4, TRUE);

@@ -1,16 +1,22 @@
 #include "../../incs/base.h"
 
-char *uint_to_hex(u_int64_t number)
+int16_t calcul_nb_char(u_int64_t number)
 {
-    u_int64_t tmp_number;
     int16_t nb_char;
-    int16_t nb_zero;
-    char *output;
 
-    tmp_number = number;
     nb_char = 1;
-    while (tmp_number /= 16)
+    while (number /= 16)
         nb_char++;
+    return (nb_char);
+}
+
+char    *uint_to_hex(u_int64_t number)
+{
+    int16_t     nb_char;
+    int16_t     nb_zero;
+    char        *output;
+
+    nb_char = calcul_nb_char(number);
     if (!(output = malloc(8)))
         fatal_error("hash block memory allocation");
     bzero(output, 8);
@@ -36,7 +42,7 @@ char *uint_to_hex(u_int64_t number)
     return (output);
 }
 
-void build_hash(t_message *msg, void *buffers, u_int32_t nb_words, u_int8_t swap)
+void    build_hash(t_message *msg, void *buffers, u_int32_t nb_words, const u_int8_t swap)
 {
     char        *hash;
     char        *hash_block;

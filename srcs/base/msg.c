@@ -1,16 +1,16 @@
 #include "../../incs/base.h"
 
-t_message *allocate_msg(void)
+t_message   *allocate_msg(void)
 {
-    t_message *new_msg;
-    t_message *tmp_msg;
+    t_message   *new_msg;
+    t_message   *tmp_msg;
 
     tmp_msg = NULL;
     if (!(new_msg = (t_message *)malloc(sizeof(t_message))))
         fatal_error("message memory allocation");
     bzero(new_msg, sizeof(t_message));
 
-    if (!(list_msg))
+    if (!list_msg)
         list_msg = new_msg;
     else {
         tmp_msg = list_msg;
@@ -21,9 +21,9 @@ t_message *allocate_msg(void)
     return (new_msg);
 }
 
-void clean_all_msg(void)
+void        clean_all_msg(void)
 {
-    t_message *tmp;
+    t_message   *tmp;
 
     tmp = list_msg;
     while (tmp) {
@@ -32,7 +32,7 @@ void clean_all_msg(void)
     }
 }
 
-void clean_msg(t_message *msg)
+void        clean_msg(t_message *msg)
 {
     if (msg->raw_content)
         free(msg->raw_content);

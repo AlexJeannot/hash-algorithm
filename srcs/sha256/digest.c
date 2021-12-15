@@ -61,7 +61,7 @@ static void process_round(t_buffers *buffers, u_int32_t block, u_int32_t count)
     swap_buffers(buffers, t1, t2);
 }
 
-void process_msg_sha256(t_message *msg)
+void        process_msg_sha256(t_message *msg)
 {
     t_buffers   buffers;
     t_buffers   save_buffers;
@@ -72,8 +72,7 @@ void process_msg_sha256(t_message *msg)
     init_buffers(&buffers);
     while (msg->cc_size < msg->fc_size)
     {
-        for (u_int32_t count = 0; count < 64; count++)
-        {
+        for (u_int32_t count = 0; count < 64; count++) {
             if (count < 16) {
                 block_offset = msg->cc_size + (count * 4);
                 ptr_block = (u_int32_t *)&msg->fmt_content[block_offset];
@@ -90,6 +89,5 @@ void process_msg_sha256(t_message *msg)
 
         msg->cc_size += 64;
     }
-
     build_hash(msg, &buffers, 8, FALSE);
 }

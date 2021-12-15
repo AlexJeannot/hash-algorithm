@@ -1,13 +1,13 @@
 #include "../../incs/md5.h"
 
-void fatal_error(char *reason)
+void    fatal_error(const char *reason)
 {
     printf("Error: %s\n", reason);
     clean_all_msg();
     exit(1);
 }
 
-void args_error(char *reason, char *input)
+void    args_error(const char *reason, const char *input)
 {
     if (input)
         printf("Error: %s [%s]\n", reason, input);

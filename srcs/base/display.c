@@ -1,6 +1,6 @@
 #include "../../incs/base.h"
 
-void display_help(void)
+void    display_help(void)
 {
     printf("\nUsage: algorithm [-p -q -r] [-s string] [file...]\n");
     printf("    algorithm       Algorithm to hash input (md5/sha256)\n");
@@ -17,7 +17,7 @@ void display_help(void)
     printf("    echo \"hello world\" | ./ft_ssl -p -s \"hello world\" file.txt\n");
 }
 
-void display_src(t_message *msg, t_args *args)
+void    display_src(const t_message *msg, const t_args *args)
 {
     if (args->r)
         printf(" ");
@@ -33,7 +33,7 @@ void display_src(t_message *msg, t_args *args)
         printf(" = ");
 }
 
-void display_hash(t_message *msg, t_args *args)
+void    display_hash(const t_message *msg, const t_args *args)
 {
     if (msg->nofile) {
         printf("Error: no such file [%s]\n", msg->src);

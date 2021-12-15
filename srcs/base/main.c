@@ -1,14 +1,15 @@
 #include "../../incs/base.h"
 
-t_message *list_msg;
+t_message   *list_msg;
 
 int main(int argc, char **argv)
 {
-    t_args args;
-    t_message *msg;
+    t_message   *msg;
+    t_args      args;
 
     list_msg = NULL;
     bzero(&args, sizeof(t_args));
+    
     parse_args((argc - 1), &argv[1], &args);
     msg = list_msg;
     while (msg)
