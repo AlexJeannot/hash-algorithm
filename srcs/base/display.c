@@ -10,11 +10,11 @@ void    display_help(void)
     printf("    -r              Reverse mode (output source after the hash)\n");
     printf("    -s              Process string\n");
     printf("\nexamples:\n");
-    printf("    ./ft_ssl file.txt\n");
-    printf("    ./ft_ssl -s \"hello world\"\n");
-    printf("    echo \"hello world\" | ./ft_ssl\n");
-    printf("    echo \"hello world\" | ./ft_ssl -p file.txt\n");
-    printf("    echo \"hello world\" | ./ft_ssl -p -s \"hello world\" file.txt\n");
+    printf("    ./ft_ssl md5 file.txt\n");
+    printf("    ./ft_ssl sha256 -s \"hello world\"\n");
+    printf("    echo \"hello world\" | ./ft_ssl md5\n");
+    printf("    echo \"hello world\" | ./ft_ssl sha256 -p file.txt\n");
+    printf("    echo \"hello world\" | ./ft_ssl md5 -p -s \"hello world\" file.txt\n");
 }
 
 void    display_src(const t_message *msg, const t_args *args)
