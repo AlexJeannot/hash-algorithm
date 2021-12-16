@@ -10,11 +10,11 @@ void    display_help(void)
     ft_putstr_fd("    -r              Reverse mode (output source after the hash)\n", 2);
     ft_putstr_fd("    -s              Process string\n", 2);
     ft_putstr_fd("\nexamples:\n", 2);
-    ft_putstr_fd("    ./ft_ssl file.txt\n", 2);
-    ft_putstr_fd("    ./ft_ssl -s \"hello world\"\n", 2);
-    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl\n", 2);
-    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl -p file.txt\n", 2);
-    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl -p -s \"hello world\" file.txt\n", 2);
+    ft_putstr_fd("    ./ft_ssl md5 file.txt\n", 2);
+    ft_putstr_fd("    ./ft_ssl sha256 -s \"hello world\"\n", 2);
+    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl md5\n", 2);
+    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl sha256 -p file.txt\n", 2);
+    ft_putstr_fd("    echo \"hello world\" | ./ft_ssl md5 -p -s \"hello world\" file.txt\n", 2);
 }
 
 void    display_src(t_message *msg, t_args *args)
